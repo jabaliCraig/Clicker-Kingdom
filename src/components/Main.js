@@ -1,9 +1,6 @@
+import React from 'react';
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import './App.css';
-import Main from './components/Main';
-import Success from './components/Success';
 
 const animals = [
 	{
@@ -704,24 +701,73 @@ const animals = [
 	// },
 ]
 
-function App() {
+const Main = () => {
+	const navigate = useNavigate();
+
+  const [showWild, setShowWild] = useState(false);
+	const [wildAnimals, setWildAnimals] = useState(animals.filter(animal => !animal.isCaptured));
+	const [captAnimals, setCaptAnimals] = useState(animals.filter(animal => animal.isCaptured));
+	const [displayAnimals, setDisplayAnimals] = useState(captAnimals)
+
+	const displayCapt = () => {
+		setShowWild(false)
+		setDisplayAnimals(captAnimals)
+	}
+
+	const displayWild = () => {
+		setShowWild(true)
+		setDisplayAnimals(wildAnimals)
+	}
+
+	const capture = (id)=> {
+		let index = animals.findIndex(animal => animal.id === id);
+
+		animals[index].isCaptured = true;
+
+		setWildAnimals(animals.filter(animal => !animal.isCaptured));
+		setCaptAnimals(animals.filter(animal => animal.isCaptured));
+
+		displayCapt();
+
+		navigate('/success')
+	}
 
 	return (
-		<Router>
-			<div className='app-container'>
-				<Routes>
-					<Route 
-					  path='/' 
-						element={<Main />} 
-					/>
-					<Route 
-					  path='/success' 
-						element={<Success />} 
-					/>
-				</Routes>
+		<div>
+			<nav>
+				<button onClick={()=> displayCapt()}>Zoo</button>
+				<button onClick={()=> displayWild()}>Wild</button>
+			</nav>
+			<div className='container'>
+			{displayAnimals.map(animal=>{
+        return (
+          <button 
+						key={animal.id}
+						className='animal-on-list'
+						onClick={(e)=> {
+							if(showWild) {
+								capture(animal.id)
+							} else {
+								console.log('You appear to own this already.', captAnimals)
+							}
+							// console.log(e.target.innerText)
+							// console.log(showWild)
+							// console.log(animals.findIndex(item => item.id === animal.id))
+						}}
+						><h1>{animal.emoji}</h1>
+          </button>
+        )
+      })}
 			</div>
-		</Router>
+
+
+
+			<h1>WELCOME TO KINGDOM CLICKER!</h1>
+			<h3>{`{make this conditional, obviously}`} Choose your first animal to get started!</h3>
+			{/* image or banner of images here */}
+			<p>Additional instructions here if necessary.</p>
+		</div>
 	)
 }
 
-export default App;
+export default Main
