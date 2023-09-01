@@ -402,7 +402,7 @@ const animals = [
 	{
 		id: 67,
 		emoji: '🦓',
-		clicks: 13,
+		clicks: 0,
 		isCaptured: true,
 	},
 	{
@@ -433,13 +433,13 @@ const animals = [
 		id: 72,
 		emoji: '🦛',
 		clicks: 0,
-		isCaptured: true,
+		isCaptured: false,
 	},
 	{
 		id: 73,
 		emoji: '🦏',
-		clicks: 65,
-		isCaptured: true,
+		clicks: 0,
+		isCaptured: false,
 	},
 	// {
 	// 	id: 74,
@@ -732,13 +732,22 @@ const Main = () => {
 		navigate('/success')
 	}
 
+	const click = (id) => {
+		let i = animals.findIndex(animal => animal.id === id);
+		animals[i].clicks++
+		setCaptAnimals(animals.filter(animal => animal.isCaptured));
+	}
+
 	return (
-		<div>
+		<div className='container'>
 			<nav>
 				<button onClick={()=> displayCapt()}>Zoo</button>
 				<button onClick={()=> displayWild()}>Wild</button>
 			</nav>
-			<div className='container'>
+
+			<h1>{showWild ? `You may capture ${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length} more animal${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : animals.reduce((acc, curr) => acc + curr.clicks, 0)}</h1>
+
+			<div className='all-animals'>
 			{displayAnimals.map(animal=>{
         return (
           <button 
@@ -746,15 +755,21 @@ const Main = () => {
 						className='animal-on-list'
 						onClick={(e)=> {
 							if(showWild) {
-								capture(animal.id)
+								if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length >0) {
+									capture(animal.id)
+								} else {
+									console.log("You can't capture that animal - you BROKE!!")
+								}
 							} else {
-								console.log('You appear to own this already.', captAnimals)
+								click(animal.id)
+								// console.log('You appear to own this already.', captAnimals)
 							}
 							// console.log(e.target.innerText)
 							// console.log(showWild)
 							// console.log(animals.findIndex(item => item.id === animal.id))
 						}}
 						><h1>{animal.emoji}</h1>
+						{showWild ? '' : <p>{animal.clicks}</p>}
           </button>
         )
       })}
