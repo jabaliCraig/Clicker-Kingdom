@@ -403,7 +403,7 @@ const animals = [
 		id: 67,
 		emoji: '🦓',
 		clicks: 0,
-		isCaptured: true,
+		isCaptured: false,
 	},
 	{
 		id: 68,
@@ -755,7 +755,7 @@ const Main = () => {
 						className='animal-on-list'
 						onClick={(e)=> {
 							if(showWild) {
-								if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length >0) {
+								if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length > 0 || animals.filter(animal => animal.isCaptured).length === 0) {
 									capture(animal.id)
 								} else {
 									console.log("You can't capture that animal - you BROKE!!")
@@ -775,12 +775,13 @@ const Main = () => {
       })}
 			</div>
 
-
-
-			<h1>WELCOME TO KINGDOM CLICKER!</h1>
-			<h3>{`{make this conditional, obviously}`} Choose your first animal to get started!</h3>
-			{/* image or banner of images here */}
-			<p>Additional instructions here if necessary.</p>
+			{animals.filter(animal => animal.isCaptured).length ? '' : 
+			<div className='welcome-div'>
+				<h1>WELCOME TO KINGDOM CLICKER!</h1>
+				<h3>Choose your first animal to get started!</h3>
+				<p>Additional instructions here if necessary.</p>
+			</div>
+			}
 		</div>
 	)
 }
