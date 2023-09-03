@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Welcome from './Welcome';
 
 const animals = [
 	{
@@ -788,18 +789,18 @@ const Main = () => {
 
 	const click = (id) => {
 		let i = animals.findIndex(animal => animal.id === id);
-		animals[i].clicks++
+		animals[i].clicks += 2 ** (animals.filter(animal => animal.isCaptured).length - 1)
 		setCaptAnimals(animals.filter(animal => animal.isCaptured));
 	}
 
 	return (
 		<div className='container'>
 			<nav>
-				<button onClick={()=> displayCapt()}>Zoo</button>
-				<button onClick={()=> displayWild()}>Wild</button>
+				<button disabled={!animals.filter(animal => animal.isCaptured).length} onClick={()=> displayCapt()}>Menagerie</button>
+				<button disabled={Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) < animals.filter(animal => animal.isCaptured).length && animals.filter(animal => animal.isCaptured).length !== 0} onClick={()=> displayWild()}>Wilderness</button>
 			</nav>
 
-			<h1>{showWild ? `You may capture ${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length} more animal${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : animals.reduce((acc, curr) => acc + curr.clicks, 0)}</h1>
+			<h1>{showWild ? `You may capture ${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length} more animal${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : animals.reduce((acc, curr) => acc + curr.clicks, 0).toLocaleString('en-US')}</h1>
 
 			<div className='all-animals'>
 			{displayAnimals.map(animal=>{
@@ -809,7 +810,7 @@ const Main = () => {
 						className='animal-on-list'
 						onClick={(e)=> {
 							if(showWild) {
-								if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length > 0 || animals.filter(animal => animal.isCaptured).length === 0) {
+								if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 > animals.filter(animal => animal.isCaptured).length || animals.filter(animal => animal.isCaptured).length === 0) {
 									capture(animal.id)
 								} else {
 									console.log("You can't capture that animal - you BROKE!!")
@@ -823,18 +824,18 @@ const Main = () => {
 							// console.log(animals.findIndex(item => item.id === animal.id))
 						}}
 						><h1>{animal.emoji}</h1>
-						{showWild ? '' : <p>{animal.clicks}</p>}
+						{showWild ? '' : <p>{animal.clicks.toLocaleString('en-US')}</p>}
           </button>
         )
       })}
 			</div>
 
-			{animals.filter(animal => animal.isCaptured).length ? '' : 
-			<div className='welcome-div'>
-				<h1>WELCOME TO KINGDOM CLICKER!</h1>
-				<h3>Choose your first animal to get started!</h3>
-				<p>Additional instructions here if necessary.</p>
-			</div>
+			{animals.filter(animal => animal.isCaptured).length ? 
+				<div className='tracking-tool'>
+					<h6>Your clicks are currently worth: <span>{(2 ** (animals.filter(animal => animal.isCaptured).length - 1)).toLocaleString('en-US')}</span></h6>
+					{animals.reduce((acc, curr) => acc + curr.clicks, 0) === 0 ? '' : <h4>You can capture another animal when you reach: <span>{(10 ** (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1)).toLocaleString('en-US')}</span></h4>}
+				</div> : 
+				<Welcome />
 			}
 		</div>
 	)
