@@ -1,38 +1,140 @@
-.App {
-  text-align: center;
+:root {
+	--green1: #a4fba6;
+	--green2: #4ae54a;
+	--green3: #30cb00;
+	--green4: #0f9200;
+	--green5: #006203;
+	--grey1: #e5e5e5;
+	--grey2: #c5c5c5;
+	--grey3: #acacac;
+	--grey4: #7b7b7b;
+	--grey5: #515151;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+	background-color: var(--grey2);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.transparent {
+	opacity: 0;
+	height: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+nav {
+	width: 100vw;
+	display: flex;
+	justify-content: center;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-button {
+	width: 49%;
+	font-size: xx-large;
+	color: var(--grey5)
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.wild {
+	background-color: var(--green1);
+	color: var(--green5);
+	border: 3px solid var(--green5)
+}
+
+.nav-button:disabled {
+	background-color: var(--grey3);
+	color: var(--grey2);
+	border-color: var(--grey2);
+	cursor: not-allowed;
+}
+
+.welcome-div {
+	padding: 20px;
+}
+
+.welcome-div > h1 {
+	text-align: center;
+}
+
+.banner {
+	font-size: 65px;
+}
+
+.warning {
+	text-align: center;
+	color: firebrick
+}
+.click-count {
+	text-align: center;
+}
+
+.wild-animals {
+	background-color: var(--green3);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.animal-on-list {
+	font-size: xx-large;
+	background-color: var(--green4);
+	border: none;
+	width: 100px;
+	border-radius: 50%;
+}
+
+.animal-on-list > h1, p {
+	margin: 5px;
+}
+
+.zoo-animals {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.clicker-on-list {
+	font-size: xx-large;
+	background-color: var(--grey1);
+	border: none;
+	width: 125px;
+	border-radius: 50%;
+}
+
+.clicker-on-list > h1, p {
+	margin: 0;
+}
+
+.clicker-on-list > p {
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+
+.clicks-per-click {
+	text-align: center;
+	font-weight: lighter;
+}
+
+.goal-bar {
+	text-align: center;
+}
+
+.success-container {
+	padding: 20px;
+	background-color: var(--grey4);
+	height: 100vh;
+	text-align: center;
+	color: var(--grey1);
+}
+
+.success-container > h1 {
+	font-size: 40px;
+}
+
+.success-container > p {
+	font-size: x-large;
+}
+
+.menagerie-link, .menagerie-link:visited {
+	color: var(--grey2);
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: smaller;
 }

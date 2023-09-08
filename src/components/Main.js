@@ -794,49 +794,59 @@ const Main = () => {
 	}
 
 	return (
-		<div className='container'>
+		<div>
 			<nav>
-				<button disabled={!animals.filter(animal => animal.isCaptured).length} onClick={()=> displayCapt()}>Menagerie</button>
-				<button disabled={Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) < animals.filter(animal => animal.isCaptured).length && animals.filter(animal => animal.isCaptured).length !== 0} onClick={()=> displayWild()}>Wilderness</button>
+				<button 
+					className='nav-button'
+					disabled={!animals.filter(animal => animal.isCaptured).length} 
+					onClick={()=> displayCapt()}
+					>Menagerie</button>
+				<button 
+					className='nav-button wild'
+					disabled={Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) < animals.filter(animal => animal.isCaptured).length && animals.filter(animal => animal.isCaptured).length !== 0} 
+					onClick={()=> displayWild()}
+					>Wilderness</button>
 			</nav>
 
-			<h1>{showWild ? `You may capture ${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length} more animal${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : animals.reduce((acc, curr) => acc + curr.clicks, 0).toLocaleString('en-US')}</h1>
+			<div className='main-container'>
+				<h1 className={!animals.filter(animal => animal.isCaptured).length ? 'transparent' : 'click-count'}>{showWild ? `You may capture ${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length} more animal${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : animals.reduce((acc, curr) => acc + curr.clicks, 0).toLocaleString('en-US')}</h1>
 
-			<div className='all-animals'>
-			{displayAnimals.map(animal=>{
-        return (
-          <button 
-						key={animal.id}
-						className='animal-on-list'
-						onClick={(e)=> {
-							if(showWild) {
-								if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 > animals.filter(animal => animal.isCaptured).length || animals.filter(animal => animal.isCaptured).length === 0) {
-									capture(animal.id)
+				<div className={showWild ? 'wild-animals' : 'zoo-animals'}>
+				{displayAnimals.map(animal=>{
+					return (
+						<button 
+							key={animal.id}
+							className={showWild ? 'animal-on-list' : 'clicker-on-list'}
+							onClick={(e)=> {
+								if(showWild) {
+									if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 > animals.filter(animal => animal.isCaptured).length || animals.filter(animal => animal.isCaptured).length === 0) {
+										capture(animal.id)
+									} else {
+										console.log("You can't capture that animal - you BROKE!!")
+									}
 								} else {
-									console.log("You can't capture that animal - you BROKE!!")
+									click(animal.id)
+									// console.log('You appear to own this already.', captAnimals)
 								}
-							} else {
-								click(animal.id)
-								// console.log('You appear to own this already.', captAnimals)
-							}
-							// console.log(e.target.innerText)
-							// console.log(showWild)
-							// console.log(animals.findIndex(item => item.id === animal.id))
-						}}
-						><h1>{animal.emoji}</h1>
-						{showWild ? '' : <p>{animal.clicks.toLocaleString('en-US')}</p>}
-          </button>
-        )
-      })}
-			</div>
+								// console.log(e.target.innerText)
+								// console.log(showWild)
+								// console.log(animals.findIndex(item => item.id === animal.id))
+							}}
+							><h1>{animal.emoji}</h1>
+							{showWild ? '' : <p>{animal.clicks.toLocaleString('en-US')}</p>}
+						</button>
+					)
+				})}
+				</div>
 
-			{animals.filter(animal => animal.isCaptured).length ? 
-				<div className='tracking-tool'>
-					<h6>Your clicks are currently worth: <span>{(2 ** (animals.filter(animal => animal.isCaptured).length - 1)).toLocaleString('en-US')}</span></h6>
-					{animals.reduce((acc, curr) => acc + curr.clicks, 0) === 0 ? '' : <h4>You can capture another animal when you reach: <span>{(10 ** (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1)).toLocaleString('en-US')}</span></h4>}
-				</div> : 
-				<Welcome />
-			}
+				{animals.filter(animal => animal.isCaptured).length ? 
+					<div className='tracking-tool'>
+						<h3 className='clicks-per-click'>Your clicks are currently worth: <span>{(2 ** (animals.filter(animal => animal.isCaptured).length - 1)).toLocaleString('en-US')}</span></h3>
+						{animals.reduce((acc, curr) => acc + curr.clicks, 0) === 0 ? '' : <h3 className='goal-bar'>You can capture another animal when you reach: <span>{(10 ** (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1)).toLocaleString('en-US')}</span></h3>}
+					</div> : 
+					<Welcome />
+				}
+			</div>
 		</div>
 	)
 }
