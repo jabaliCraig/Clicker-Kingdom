@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Welcome from './Welcome';
 
@@ -793,6 +792,23 @@ const Main = () => {
 		setCaptAnimals(animals.filter(animal => animal.isCaptured));
 	}
 
+	const clickAll = () => {
+		const zoo = animals.filter(animal => animal.isCaptured)
+		if (zoo.length >= 3) {
+			zoo.forEach(animal => {
+				click(animal.id)
+			})
+		}
+	}
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+				clickAll();
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, []);
+
 	return (
 		<div>
 			<nav>
@@ -826,11 +842,7 @@ const Main = () => {
 									}
 								} else {
 									click(animal.id)
-									// console.log('You appear to own this already.', captAnimals)
 								}
-								// console.log(e.target.innerText)
-								// console.log(showWild)
-								// console.log(animals.findIndex(item => item.id === animal.id))
 							}}
 							><h1>{animal.emoji}</h1>
 							{showWild ? '' : <p>{animal.clicks.toLocaleString('en-US')}</p>}
@@ -841,7 +853,7 @@ const Main = () => {
 
 				{animals.filter(animal => animal.isCaptured).length ? 
 					<div className='tracking-tool'>
-						<h3 className='clicks-per-click'>Your clicks are currently worth: <span>{(2 ** (animals.filter(animal => animal.isCaptured).length - 1)).toLocaleString('en-US')}</span></h3>
+						<h3 className='clicks-per-click'>{animals.filter(animal => animal.isCaptured).length === 3 ? <p>Your animals have learned to click themselves! Keep clicking manually to give any of them an extra boost!</p> : ''}Your clicks are currently worth: <span>{(2 ** (animals.filter(animal => animal.isCaptured).length - 1)).toLocaleString('en-US')}</span></h3>
 						{animals.reduce((acc, curr) => acc + curr.clicks, 0) === 0 ? '' : <h3 className='goal-bar'>You can capture another animal when you reach: <span>{(10 ** (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1)).toLocaleString('en-US')}</span></h3>}
 					</div> : 
 					<Welcome />
