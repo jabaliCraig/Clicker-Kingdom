@@ -773,6 +773,8 @@ const Main = () => {
 		setDisplayAnimals(wildAnimals)
 	}
 
+	const totalClicks = animals.reduce((acc, curr) => acc + curr.clicks, 0)
+
 	const capture = (id)=> {
 		let index = animals.findIndex(animal => animal.id === id);
 
@@ -786,20 +788,23 @@ const Main = () => {
 		navigate('/success')
 	}
 
+	const clickStrength = (2 ** (captAnimals.length - 1)) * (10 ** Math.floor(captAnimals.length/5))
+
 	const click = (id) => {
 		let i = animals.findIndex(animal => animal.id === id);
-		animals[i].clicks += 2 ** (animals.filter(animal => animal.isCaptured).length - 1)
+		animals[i].clicks += clickStrength
 		setCaptAnimals(animals.filter(animal => animal.isCaptured));
 	}
 
 	const clickAll = () => {
-		const zoo = animals.filter(animal => animal.isCaptured)
-		if (zoo.length >= 3) {
-			zoo.forEach(animal => {
+		if (captAnimals.length >= 3) {
+			captAnimals.forEach(animal => {
 				click(animal.id)
 			})
 		}
 	}
+
+	const threshold = Math.floor(Math.log10(totalClicks));
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -819,13 +824,13 @@ const Main = () => {
 					>Menagerie</button>
 				<button 
 					className='nav-button wild'
-					disabled={Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) < animals.filter(animal => animal.isCaptured).length && animals.filter(animal => animal.isCaptured).length !== 0} 
+					disabled={threshold < animals.filter(animal => animal.isCaptured).length && animals.filter(animal => animal.isCaptured).length !== 0} 
 					onClick={()=> displayWild()}
 					>Wilderness</button>
 			</nav>
 
 			<div className='main-container'>
-				<h1 className={!animals.filter(animal => animal.isCaptured).length ? 'transparent' : 'click-count'}>{showWild ? `You may capture ${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length} more animal${Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : animals.reduce((acc, curr) => acc + curr.clicks, 0).toLocaleString('en-US')}</h1>
+				<h1 className={!animals.filter(animal => animal.isCaptured).length ? 'transparent' : 'click-count'}>{showWild ? `You may capture ${threshold + 1 - animals.filter(animal => animal.isCaptured).length} more animal${threshold + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : totalClicks.toLocaleString('en-US')}</h1>
 
 				<div className={showWild ? 'wild-animals' : 'zoo-animals'}>
 				{displayAnimals.map(animal=>{
@@ -835,7 +840,7 @@ const Main = () => {
 							className={showWild ? 'animal-on-list' : 'clicker-on-list'}
 							onClick={(e)=> {
 								if(showWild) {
-									if (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1 > animals.filter(animal => animal.isCaptured).length || animals.filter(animal => animal.isCaptured).length === 0) {
+									if (threshold + 1 > animals.filter(animal => animal.isCaptured).length || animals.filter(animal => animal.isCaptured).length === 0) {
 										capture(animal.id)
 									} else {
 										console.log("You can't capture that animal - you BROKE!!")
@@ -853,8 +858,8 @@ const Main = () => {
 
 				{animals.filter(animal => animal.isCaptured).length ? 
 					<div className='tracking-tool'>
-						<h3 className='clicks-per-click'>{animals.filter(animal => animal.isCaptured).length === 3 ? <p>Your animals have learned to click themselves! Keep clicking manually to give any of them an extra boost!</p> : ''}Your clicks are currently worth: <span>{(2 ** (animals.filter(animal => animal.isCaptured).length - 1)).toLocaleString('en-US')}</span></h3>
-						{animals.reduce((acc, curr) => acc + curr.clicks, 0) === 0 ? '' : <h3 className='goal-bar'>You can capture another animal when you reach: <span>{(10 ** (Math.floor(Math.log10(animals.reduce((acc, curr) => acc + curr.clicks, 0))) + 1)).toLocaleString('en-US')}</span></h3>}
+						<h3 className='clicks-per-click'>{animals.filter(animal => animal.isCaptured).length === 3 ? <p>Your animals have learned to click themselves! Keep clicking manually to give them an extra boost!</p> : ''}Your clicks are currently worth: <span>{clickStrength.toLocaleString('en-US')}</span></h3>
+						{totalClicks === 0 ? '' : <h3 className='goal-bar'>You can capture another animal when you reach: <span>{(10 ** (threshold + 1)).toLocaleString('en-US')}</span></h3>}
 					</div> : 
 					<Welcome />
 				}

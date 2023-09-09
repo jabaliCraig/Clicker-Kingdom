@@ -57,6 +57,10 @@ nav {
 	font-size: 65px;
 }
 
+.banner > span {
+	font-size: 60px;
+}
+
 .warning {
 	text-align: center;
 	color: firebrick
