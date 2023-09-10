@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Clicker-Kingdom/static/css/main.7a827906.css",
-    "main.js": "/Clicker-Kingdom/static/js/main.1578d542.js",
-    "static/js/787.e63af3ab.chunk.js": "/Clicker-Kingdom/static/js/787.e63af3ab.chunk.js",
-    "index.html": "/Clicker-Kingdom/index.html",
-    "main.7a827906.css.map": "/Clicker-Kingdom/static/css/main.7a827906.css.map",
-    "main.1578d542.js.map": "/Clicker-Kingdom/static/js/main.1578d542.js.map",
-    "787.e63af3ab.chunk.js.map": "/Clicker-Kingdom/static/js/787.e63af3ab.chunk.js.map"
+    "main.css": "/static/css/main.7a827906.css",
+    "main.js": "/static/js/main.e2771631.js",
+    "static/js/787.e63af3ab.chunk.js": "/static/js/787.e63af3ab.chunk.js",
+    "index.html": "/index.html",
+    "main.7a827906.css.map": "/static/css/main.7a827906.css.map",
+    "main.e2771631.js.map": "/static/js/main.e2771631.js.map",
+    "787.e63af3ab.chunk.js.map": "/static/js/787.e63af3ab.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7a827906.css",
-    "static/js/main.1578d542.js"
+    "static/js/main.e2771631.js"
   ]
 }
