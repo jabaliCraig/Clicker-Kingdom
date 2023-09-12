@@ -1,7 +1,7 @@
 {
   "name": "clicker-kingdom",
   "version": "0.1.0",
-  "homepage": "https://jabaliCraig.github.io/clicker-kingdom",
+  "homepage": "https://jabaliCraig.github.io/Clicker-Kingdom",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
