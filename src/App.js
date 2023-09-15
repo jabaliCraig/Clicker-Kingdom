@@ -15,7 +15,7 @@ function App() {
 						element={<Main />} 
 					/>
 					<Route 
-					  path='clicker-kingdom/success' 
+					  path='/clicker-kingdom/success' 
 						element={<Success />} 
 					/>
 				</Routes>
