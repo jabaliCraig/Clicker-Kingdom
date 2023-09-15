@@ -785,7 +785,7 @@ const Main = () => {
 
 		displayCapt();
 
-		navigate('clicker-kingdom/success')
+		navigate('/success')
 	}
 
 	const clickStrength = (2 ** (captAnimals.length - 1)) * (10 ** Math.floor(captAnimals.length/5))
