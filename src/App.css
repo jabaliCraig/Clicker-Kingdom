@@ -47,10 +47,10 @@ nav {
 
 .welcome-div {
 	padding: 20px;
+	text-align: center;
 }
 
 .welcome-div > h1 {
-	text-align: center;
 }
 
 .banner {
@@ -91,7 +91,7 @@ nav {
 .zoo-animals {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
+	justify-content: center;
 }
 
 .clicker-on-list {
@@ -100,6 +100,7 @@ nav {
 	border: none;
 	width: 125px;
 	border-radius: 50%;
+	margin: 20px;
 }
 
 .clicker-on-list > h1, p {
@@ -114,6 +115,10 @@ nav {
 .clicks-per-click {
 	text-align: center;
 	font-weight: lighter;
+}
+
+.tracking-tool > h2 {
+	padding: 10px;
 }
 
 .goal-bar {
