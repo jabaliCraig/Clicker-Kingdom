@@ -24,12 +24,18 @@ nav {
 	width: 100vw;
 	display: flex;
 	justify-content: center;
+	position: fixed;
+	top: 0;
 }
 
 .nav-button {
 	width: 49%;
 	font-size: xx-large;
 	color: var(--grey5)
+}
+
+.main-container {
+	margin-top: 65px;
 }
 
 .wild {
@@ -117,12 +123,15 @@ nav {
 	font-weight: lighter;
 }
 
-.tracking-tool > h2 {
+.info-section {
 	padding: 10px;
+	text-align: center
 }
 
-.goal-bar {
-	text-align: center;
+.info-section > h6 {
+	font-size: x-large;
+	color: var(--green5);
+	margin: 0;
 }
 
 .success-container {

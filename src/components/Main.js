@@ -882,11 +882,15 @@ const animals = [
 
 const Main = () => {
 	const navigate = useNavigate();
-
+	
   const [showWild, setShowWild] = useState(false);
 	const [wildAnimals, setWildAnimals] = useState(animals.filter(animal => !animal.isCaptured));
 	const [captAnimals, setCaptAnimals] = useState(animals.filter(animal => animal.isCaptured).sort((a,b) => a.orderNumber - b.orderNumber));
 	const [displayAnimals, setDisplayAnimals] = useState(captAnimals)
+	
+	const totalClicks = captAnimals.reduce((acc, curr) => acc + curr.clicks, 0);
+	// const threshold = captAnimals.length < 4 ? 10 ** captAnimals.length : 1500 + 2500 * (captAnimals.length - 4);
+	const threshold = captAnimals.length < 3 ? 10 ** captAnimals.length : 500 * (captAnimals.length) ** 2 - 2500 * (captAnimals.length) + 4000;
 
 	const displayCapt = () => {
 		setShowWild(false)
@@ -897,8 +901,6 @@ const Main = () => {
 		setShowWild(true)
 		setDisplayAnimals(wildAnimals)
 	}
-
-	const totalClicks = captAnimals.reduce((acc, curr) => acc + curr.clicks, 0)
 
 	const capture = (id)=> {
 		let index = animals.findIndex(animal => animal.id === id);
@@ -911,7 +913,6 @@ const Main = () => {
 		navigate('/clicker-kingdom/success')
 	}
 
-	
 	const click = (id, clickStrength) => {
 		let i = animals.findIndex(animal => animal.id === id);
 		animals[i].clicks += clickStrength
@@ -923,13 +924,11 @@ const Main = () => {
 			let index = captAnimals.findIndex(animal => animal.id === captAnimal.id);
 
 			if(index < captAnimals.length -1) {
-				let strength = (2 ** (captAnimals.length - 2 - index)) * (100 ** Math.floor((captAnimals.length - 1 - index)/3));
+				let strength = captAnimals.length - 1 - index//(2 ** (captAnimals.length - 2 - index)) * (100 ** Math.floor((captAnimals.length - 1 - index)/3));
 				click(captAnimal.id, strength);
 			}
 		})
 	}
-
-	const threshold = Math.floor(Math.log10(totalClicks));
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -949,13 +948,13 @@ const Main = () => {
 					>Menagerie</button>
 				<button 
 					className='nav-button wild'
-					disabled={threshold < animals.filter(animal => animal.isCaptured).length && animals.filter(animal => animal.isCaptured).length !== 0} 
+					disabled={totalClicks < threshold && animals.filter(animal => animal.isCaptured).length !== 0} 
 					onClick={()=> displayWild()}
 					>Wilderness</button>
 			</nav>
 
 			<div className='main-container'>
-				<h1 className={!animals.filter(animal => animal.isCaptured).length ? 'transparent' : 'click-count'}>{showWild ? `You may capture ${threshold + 1 - animals.filter(animal => animal.isCaptured).length} more animal${threshold + 1 - animals.filter(animal => animal.isCaptured).length === 1 ? '' : 's'}!` : totalClicks.toLocaleString('en-US')}</h1>
+				<h1 className={!animals.filter(animal => animal.isCaptured).length && !showWild ? 'transparent' : 'click-count'}>{showWild ? `You may capture ${!animals.filter(animal => animal.isCaptured).length ? 'your first' : 'another'} animal!` : totalClicks.toLocaleString('en-US')}</h1>
 
 				<div className={showWild ? 'wild-animals' : 'zoo-animals'}>
 				{displayAnimals.map(animal=>{
@@ -982,10 +981,15 @@ const Main = () => {
 				</div>
 
 				{animals.filter(animal => animal.isCaptured).length ? 
-					<div className='tracking-tool'>
-						<h2 className='clicks-per-click'>{animals.filter(animal => animal.isCaptured).length === 1 ? '' : <p>Your earlier animal{animals.filter(animal => animal.isCaptured).length === 2 ? ' is' : 's are'} autoclicking, and the more animals you collect, the bigger the clicks will become! You can also keep clicking manually!</p>}</h2>
-						{totalClicks === 0 ? '' : <h3 className='goal-bar'>You can capture another animal when you reach: <span>{(10 ** (threshold + 1)).toLocaleString('en-US')}</span></h3>}
-					</div> : 
+					<div className='info-section'>
+						<div className='tracking-tool'>
+							<h2 className='clicks-per-click'>{animals.filter(animal => animal.isCaptured).length === 1 ? '' : <p>Your earlier animals will autoclick, and the more animals you collect, the bigger their clicks will become! You can also keep clicking manually!</p>}</h2>
+						{totalClicks === 0 ? '' : <h3 className='goal-bar'>You can capture another animal when you reach: <span>{threshold.toLocaleString('en-US')}</span></h3>}
+						</div>
+						{totalClicks < threshold ? null :
+						<h6>The Wilderness is open!</h6>} 
+					</div>
+					: 
 					<Welcome />
 				}
 			</div>
