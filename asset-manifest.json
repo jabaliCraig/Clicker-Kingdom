@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/clicker-kingdom/static/css/main.eb5edcf1.css",
-    "main.js": "/clicker-kingdom/static/js/main.9c3d0179.js",
+    "main.js": "/clicker-kingdom/static/js/main.cf1fae8e.js",
     "index.html": "/clicker-kingdom/index.html",
     "main.eb5edcf1.css.map": "/clicker-kingdom/static/css/main.eb5edcf1.css.map",
-    "main.9c3d0179.js.map": "/clicker-kingdom/static/js/main.9c3d0179.js.map"
+    "main.cf1fae8e.js.map": "/clicker-kingdom/static/js/main.cf1fae8e.js.map"
   },
   "entrypoints": [
     "static/css/main.eb5edcf1.css",
-    "static/js/main.9c3d0179.js"
+    "static/js/main.cf1fae8e.js"
   ]
 }
