@@ -890,7 +890,8 @@ const Main = () => {
 	
 	const totalClicks = captAnimals.reduce((acc, curr) => acc + curr.clicks, 0);
 	// const threshold = captAnimals.length < 4 ? 10 ** captAnimals.length : 1500 + 2500 * (captAnimals.length - 4);
-	const threshold = captAnimals.length < 3 ? 10 ** captAnimals.length : 500 * (captAnimals.length) ** 2 - 2500 * (captAnimals.length) + 4000;
+	// const threshold = captAnimals.length < 3 ? 10 ** captAnimals.length : 500 * (captAnimals.length) ** 2 - 2500 * (captAnimals.length) + 4000;
+	const threshold = captAnimals.length < 4 ? 10 ** captAnimals.length : 90 * (captAnimals.length) ** 3 - 390 * (captAnimals.length) ** 2 + 300 * (captAnimals.length) + 1000;
 
 	const displayCapt = () => {
 		setShowWild(false)
